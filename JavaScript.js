@@ -6,7 +6,7 @@ function saveCopy() {
   localStorage.setItem("items", JSON.stringify(items));
 }
 
-let sections = ["Produce", "Dairy & Egg", "Meat", "Snacks", "Frozen", "Candy", "Home needs", "clothes", "Other"]
+let sections = ["Produce", "Dairy & Egg", "Meat", "Snacks", "Frozen", "Candy", "Home needs", "Clothes", "Other"]
 
 function saveItems() {
   saveCopy();
