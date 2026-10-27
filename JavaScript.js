@@ -6,7 +6,7 @@ function saveCopy() {
   localStorage.setItem("items", JSON.stringify(items));
 }
 
-let sections = ["Produce", "Dairy & Egg", "Meat", "Snacks", "Frozen", "Candy", "Home needs", "Clothes", "Other"]
+let sections = ["Produce", "Dairy & Egg", "Meat", "Snacks", "Frozen", "Candy", "Home needs", "clothes", "Other"]
 
 function saveItems() {
   saveCopy();
@@ -101,6 +101,7 @@ function renderItems() {
       nameSpan.addEventListener("click", function () {
         let editInput = document.createElement("input");
         editInput.type = "text";
+        editInput.className = "text";
         editInput.value = item.task;
 
         nameSpan.replaceWith(editInput);
