@@ -1,9 +1,20 @@
+const API = "https://shopping-list-server-rrkw.onrender.com/api/shopping-list";
+
 let items = JSON.parse(localStorage.getItem("items")) || [];
+
+function saveCopy() {
+  localStorage.setItem("items", JSON.stringify(items));
+}
 
 let sections = ["Produce", "Dairy & Egg", "Meat", "Snacks", "Frozen", "Candy", "Home needs", "clothes", "Other"]
 
 function saveItems() {
-  localStorage.setItem("items", JSON.stringify(items));
+  saveCopy();
+  fetch(API, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(items)
+  });
 }
 
 let head = document.createElement("h1");
@@ -156,7 +167,6 @@ function renderItems() {
 
       checkBtn.addEventListener("click", function () {
         item.done = !item.done;
-
         saveItems();
         renderItems();
       });
@@ -200,13 +210,33 @@ function renderItems() {
 
 renderItems();
 
+fetch(API)
+  .then(res => res.json())
+  .then(function (data) {
+    items = data;
+    saveCopy();
+    renderItems();
+  })
+
 function addItem() {
   let text = itemsInput.value.trim();
   if (text === "") return;
-  items.push({ task: text, done: false, qty: 1, section: sectionSelect.value });
+  let newItem = { task: text, done: false, qty: 1, section: sectionSelect.value };
 
-  saveItems();
-  renderItems();
+  fetch(API, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(newItem)
+  })
+    .then(function (res) {
+      if (!res.ok) {
+        alert("error: Item already exist");
+        return;
+      }
+      items.push(newItem);
+      saveCopy();
+      renderItems();
+    });
 
   itemsInput.value = "";
 }
